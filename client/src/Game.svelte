@@ -7,17 +7,23 @@
     import { Chess } from 'chess.js'
 
 
-    export let id; // document ID
+    export let id;
+    export let uid;
 
     let gameref = db.doc('rooms/'+id);
-    let gameBoard;
+    let gameBoard, black = false, white = false;
 
     docData(gameref).subscribe(match => {
-        console.log(match);
         gameBoard = match.gameBoard
         board.position(gameBoard)
         game.load(gameBoard)
-        console.log(game.fen());
+        black = match.black == uid
+        white = match.white == uid
+        console.log(black, white);
+        if (black)
+            board.orientation('black')
+        else
+            board.orientation('white')
     })
 
     var board = null
@@ -26,11 +32,11 @@
     var blackSquareGrey = '#696969'
 
     function removeGreySquares () {
-    window.$('#myBoard .square-55d63').css('background', '')
+    window.$('#myBoard'+id+ ' .square-55d63').css('background', '')
     }
 
     function greySquare (square) {
-    var square = window.$('#myBoard .square-' + square)
+    var square = window.$('#myBoard'+id+ ' .square-' + square)
 
     var background = whiteSquareGrey
     if (square.hasClass('black-3c85d')) {
@@ -46,7 +52,9 @@
 
     // or if it's not that side's turn
     if ((game.turn() === 'w' && piece.search(/^b/) !== -1) ||
-        (game.turn() === 'b' && piece.search(/^w/) !== -1)) {
+        (game.turn() === 'b' && piece.search(/^w/) !== -1) ||
+        (game.turn() === 'w' && black) ||
+        (game.turn() === 'b' && white)) {
         return false
     }
     }

@@ -19,6 +19,6 @@
 
 {#each $rooms as room}
 <h3> {room.id} </h3>
-<Game id={room.id} />
+<Game id={room.id} uid={uid}/>
 
 {/each}
