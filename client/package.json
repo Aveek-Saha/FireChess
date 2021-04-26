@@ -18,6 +18,8 @@
     "svelte": "^3.0.0"
   },
   "dependencies": {
+    "@chrisoakman/chessboardjs": "^1.0.0",
+    "chess.js": "^0.11.0",
     "firebase": "^8.4.1",
     "rxfire": "^4.0.0",
     "rxjs": "^6.6.7",
