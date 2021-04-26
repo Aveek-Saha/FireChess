@@ -1,17 +1,24 @@
 <script>
+    import { docData } from "rxfire/firestore";
     import { db } from './firebase';
-    import { collectionData } from 'rxfire/firestore';
-    import { startWith } from 'rxjs/operators';
 
     import { onMount } from 'svelte';
 
     import { Chess } from 'chess.js'
 
-    // User ID passed from parent
-    export let uid;
 
-    const query = db.collection('rooms').where('white', '==', uid)
-	let roomID = collectionData(query, 'id').pipe(startWith([]));;
+    export let id; // document ID
+
+    let gameref = db.doc('rooms/'+id);
+    let gameBoard;
+
+    docData(gameref).subscribe(match => {
+        console.log(match);
+        gameBoard = match.gameBoard
+        board.position(gameBoard)
+        game.load(gameBoard)
+        console.log(game.fen());
+    })
 
     var board = null
     var game = new Chess()
@@ -56,6 +63,9 @@
 
     // illegal move
     if (move === null) return 'snapback'
+    else{
+            db.doc('rooms/'+id).update({ gameBoard: game.fen() });
+        }
     }
 
     function onMouseoverSquare (square, piece) {
@@ -95,21 +105,11 @@
     onSnapEnd: onSnapEnd
     }
     onMount(() => {
-        board = Chessboard('myBoard', config)
+        board = Chessboard('myBoard'+id, config)
 	});
 </script>
 
 <style>
 </style>
 
-
-<h3>Hi 
-    {#each $roomID as todo}
-
-    {todo.id}<br>
-    
-    {/each}
-</h3>
-<h3>Hi { uid }</h3>
-
-<div id="myBoard" style="width: 400px"></div>
+<div id={"myBoard" + id} style="width: 400px"></div>

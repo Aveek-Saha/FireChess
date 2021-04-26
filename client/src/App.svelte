@@ -1,6 +1,6 @@
 <script>
     import Profile from './Profile.svelte';
-    import Game from './Game.svelte';
+    import Room from './Room.svelte';
 
     import { auth, googleProvider, db } from './firebase';
 	import { collectionData } from 'rxfire/firestore';
@@ -16,7 +16,9 @@
     }
 
 	function createRoom() {
-        db.collection('rooms').add({ white: user.uid, gameBoard: "blank", gameStatus: "progress" });
+        db.collection('rooms').add({ white: user.uid, 
+            gameBoard: "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1", 
+            gameStatus: "progress" });
     }
 
 	function joinRoom(event) {
@@ -34,7 +36,7 @@
 	<button on:click={createRoom}>
 		Create Room
 	</button>
-	<Game uid={user.uid} />
+	<Room uid={user.uid} />
 {:else}
 	<button on:click={login}>
 		Sign in with Google
