@@ -7,7 +7,7 @@
     // User ID passed from parent
     export let uid;
 
-    const query = db.collection('rooms').where('white', '==', uid)
+    const query = db.collection('rooms').where('players', 'array-contains', uid)
 	let rooms = collectionData(query, 'id').pipe(startWith([]));;
 
     
@@ -18,7 +18,7 @@
 
 
 {#each $rooms as room}
-
+<h3> {room.id} </h3>
 <Game id={room.id} />
 
 {/each}
