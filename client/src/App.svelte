@@ -56,7 +56,7 @@
 		Create Room
 	</button>
     <input bind:value={roomID}>
-    <button on:click={joinRoom}>Add Task</button>
+    <button on:click={joinRoom}>Join Room</button>
 	<Room uid={user.uid} />
 {:else}
 	<button on:click={login}>

@@ -2,13 +2,14 @@
     import { docData } from "rxfire/firestore";
     import { db } from './firebase';
 
-    import { onMount } from 'svelte';
+    import { onMount, createEventDispatcher } from 'svelte';
 
     import { Chess } from 'chess.js'
 
-
     export let id;
     export let uid;
+
+    const dispatch = createEventDispatcher();
 
     let gameref = db.doc('rooms/'+id);
     let gameBoard, black = false, white = false;
@@ -115,9 +116,14 @@
     onMount(() => {
         board = Chessboard('myBoard'+id, config)
 	});
+
+    function goBack() {
+		dispatch('goBack', { id });
+	}
 </script>
 
 <style>
 </style>
+
 
 <div id={"myBoard" + id} style="width: 400px"></div>

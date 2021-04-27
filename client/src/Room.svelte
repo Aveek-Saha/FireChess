@@ -10,6 +10,16 @@
     const query = db.collection('rooms').where('players', 'array-contains', uid)
 	let rooms = collectionData(query, 'id').pipe(startWith([]));;
 
+    let roomID = "";
+
+    function selectRoom(id) {
+        roomID = id
+        console.log(id);
+    }
+    function roomList() {
+        roomID = "";
+    }
+
     
 </script>
 
@@ -18,7 +28,18 @@
 
 
 {#each $rooms as room}
-<h3> {room.id} </h3>
-<Game id={room.id} uid={uid}/>
-
+    <br>
+    {#if roomID==""}
+        <button on:click={selectRoom(room.id)}>
+            {room.id}
+        </button>
+    {/if}
+    {#if roomID==room.id}
+        <button on:click={roomList}>
+            Back
+        </button>
+    {/if}
+    {#if roomID==room.id}
+        <Game id={room.id} uid={uid}/>
+    {/if}
 {/each}
