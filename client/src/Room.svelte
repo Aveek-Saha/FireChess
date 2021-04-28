@@ -58,27 +58,52 @@
 </style>
 
 {#if roomID==""}
-    <button on:click={createRoom}>
-        Create Room
-    </button>
-    <input bind:value={text}>
-    <button on:click={joinRoom}>Join Room</button>
+<form>
+    <div class="row g-3">
+        <div class="col-auto">
+          <label for="inputText" class="visually-hidden">Room ID</label>
+          <input type="search" class="form-control" id="inputText" placeholder="Room ID" bind:value={text}>
+        </div>
+        <div class="col-auto">
+            <button type="button" class="btn btn-outline-info mb-3" on:click={joinRoom}>Join Room</button>
+        </div>
+    </div>
+    <div class="row mb-3">
+        <div class="col-auto">
+            <button type="button" class="btn btn-outline-success" on:click={createRoom}>
+                Create Room
+            </button>
+        </div>
+    </div>
+  </form>
 {/if}
 
-{#each $rooms as room}
-    <br>
-    {#if roomID==""}
-        <button on:click={selectRoom(room.id)}>
-            {room.id}
-        </button>
-    {/if}
-    {#if roomID==room.id}
-        <br>
-        <button on:click={roomList}>
+
+{#if roomID!=""}
+<form class="row g-3 mb-3">
+    <div class="col-12">
+        <button type="button" class="btn btn-primary" on:click={roomList}>
             Back
         </button>
-    {/if}
-    {#if roomID==room.id}
-        <Game id={room.id} uid={uid}/>
-    {/if}
-{/each}
+    </div>
+</form>
+{/if}
+
+<div class="row">
+    <div class="col-4">
+        <div class="list-group">
+            {#each $rooms as room}
+                {#if roomID==""}
+                        <button type="button" class="list-group-item list-group-item-action" 
+                        on:click={selectRoom(room.id)}>
+                        {room.id}
+                    </button>
+                {/if}
+                {#if roomID==room.id}
+                    <Game id={room.id} uid={uid}/>
+                {/if}
+            {/each}
+        </div>
+    </div>
+</div>
+
