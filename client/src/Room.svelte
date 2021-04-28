@@ -33,6 +33,7 @@
 
 	function joinRoom() {
         var docRef = db.collection("rooms").doc(text);
+        text=""
         docRef.get().then((doc) => {
             if (doc.exists) {
                 console.log("Document data:", doc.data());
