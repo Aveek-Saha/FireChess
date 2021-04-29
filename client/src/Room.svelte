@@ -59,7 +59,7 @@
 
 {#if roomID==""}
 <div class="row justify-content-around">
-    <div class="col-lg-4 col-md-5">
+    <div class="col-lg-4 col-md-5 mb-3">
         <div class="card">
             <div class="card-header">
                 <h5 class="card-title">Room List</h5>
@@ -76,7 +76,7 @@
     </div>
     <div class="col-auto">
         <form>
-            <div class="row g-3">
+            <div class="row g-2">
                 <div class="col-auto">
                     <label for="inputText" class="visually-hidden">Room ID</label>
                     <input type="search" class="form-control" id="inputText" placeholder="Room ID" bind:value={text}>

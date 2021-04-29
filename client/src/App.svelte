@@ -13,9 +13,24 @@
         auth.signInWithPopup(googleProvider);
     }
 </script>
+
 <style>
-    
+
+.signin {
+  display: flex;
+  align-items: center;
+  padding-top: 40px;
+  padding-bottom: 40px;
+}
+
+.form-signin {
+  width: 100%;
+  padding: 15px;
+  margin: auto;
+}
+
 </style>
+
 <header class="py-3 mb-3 border-bottom bg-dark text-white">
     <div class="container">
       <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
@@ -48,9 +63,29 @@
     </div>
 
     {:else}
-    <div class="container-fluid">
-    <button on:click={login}>
-            Sign in with Google
-        </button>
+    <div class="container-fluid signin">
+        <div class="text-center form-signin">
+            <h1 class="h3 mb-3 fw-normal">Sign in/ Sign up</h1>
+            <!-- Facebook -->
+            <button class="btn btn-lg btn-primary" style="background-color: #3b5998; border:none">
+                <i class="fab fa-facebook-f me-2"></i>Facebook
+            </button>
+    
+            <!-- Twitter -->
+            <button class="btn btn-lg btn-primary" style="background-color: #55acee; border:none">
+                <i class="fab fa-twitter me-2"></i>Twitter
+            </button>
+    
+            <!-- Google -->
+            <button class="btn btn-lg btn-primary" style="background-color: #dd4b39; border:none" 
+            on:click={login}>
+                <i class="fab fa-google me-2"></i>Google
+            </button>
+    
+            <!-- Github -->
+            <button class="btn btn-lg btn-primary" style="background-color: #333333; border:none">
+                <i class="fab fa-github me-2"></i>GitHub
+            </button>
+        </div>
     </div>
     {/if}
