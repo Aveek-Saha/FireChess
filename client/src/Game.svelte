@@ -13,7 +13,7 @@
 
     let gameref = db.doc('rooms/'+id);
     let gameBoard, black = false, white = false, blackName, whiteName;
-    let matchStart=false, turn;
+    let matchStart=false, turn, gameOver=false;
 
     new ClipboardJS('.copy');
 
@@ -27,6 +27,7 @@
             matchStart = true
         }
         turn = game.turn()
+        gameOver = game.game_over()
         whiteName = match.white.name
         white = match.white.uid == uid
         if (black)
@@ -129,6 +130,14 @@
     function goBack() {
 		dispatch('goBack', { id });
 	}
+
+    function restartGame() {
+        db.doc('rooms/'+id).update({ gameBoard: "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1" })
+        .then(() => {
+            board.start()
+            game.reset()
+        });
+    }
 </script>
 
 <style>
@@ -148,10 +157,15 @@
                         <i class="fas fa-clipboard me-2"></i>Copy Room ID
                     </button>
                 {:else}
-                    {#if turn === 'w'}
+                    {#if turn === 'w' && !gameOver}
                         <p class="card-text">{whiteName}'s turn (White)</p>
-                    {:else if turn === 'b'}
+                    {:else if turn === 'b' && !gameOver}
                         <p class="card-text">{blackName}'s turn (Black)</p>
+                    {:else if gameOver}
+                        <p class="card-text">Game Over!</p>
+                        <button type="button" class="btn btn-outline-dark" on:click={restartGame}>
+                            <i class="fas fa-sync-alt me-2"></i>Reset Board
+                        </button>
                     {/if}
                 {/if}
             </div>
