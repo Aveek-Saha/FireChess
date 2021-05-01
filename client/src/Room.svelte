@@ -6,17 +6,17 @@
 
     // User ID passed from parent
     export let uid;
+    export let username;
 
     const query = db.collection('rooms').where('players', 'array-contains', uid)
 	let rooms = collectionData(query, 'id').pipe(startWith([]));;
 
     let roomID = "";
-	let text;
+	let text="";
 
 
     function selectRoom(id) {
         roomID = id
-        console.log(id);
     }
     function roomList() {
         roomID = "";
@@ -25,21 +25,23 @@
 	function createRoom() {
         db.collection('rooms').add({
             players: [uid], 
-            white: uid, 
+            white: {"uid": uid, "name": username}, 
             gameBoard: "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1", 
             gameStatus: "progress" 
         });
     }
 
 	function joinRoom() {
+        if (text == "")
+            return
         var docRef = db.collection("rooms").doc(text);
         text=""
         docRef.get().then((doc) => {
             if (doc.exists) {
                 console.log("Document data:", doc.data());
-                if(uid !== doc.data().white)
+                if(uid !== doc.data().white.uid)
                     docRef.update({ 
-                        black: uid,
+                        black: {"uid": uid, "name": username},
                         players: arrayUnion(uid)
                     });
             } else {
@@ -67,7 +69,7 @@
             <div class="list-group list-group-flush">
                 {#each $rooms as room}
                             <button type="button" class="list-group-item list-group-item-action" 
-                            on:click={selectRoom(room.id)}>
+                            on:click={() => selectRoom(room.id)}>
                             {room.id}
                         </button>
                 {/each}
@@ -82,7 +84,8 @@
                     <input type="search" class="form-control" id="inputText" placeholder="Room ID" bind:value={text}>
                 </div>
                 <div class="col-auto">
-                    <button type="button" class="btn btn-outline-info mb-3" on:click={joinRoom}>Join Room</button>
+                    <button type="button" class="btn btn-outline-primary mb-3" disabled={text==""}
+                    on:click={joinRoom}>Join Room</button>
                 </div>
             </div>
             <div class="row mb-3">
@@ -113,9 +116,9 @@
         <div class="list-group">
             {#each $rooms as room}
                 {#if roomID==room.id}
-                    <div class="col-md-6 offset-md-3">
+                    <!-- <div class="col-md-6 offset-md-3"> -->
                         <Game id={room.id} uid={uid}/>
-                    </div>
+                    <!-- </div> -->
                 {/if}
             {/each}
         </div>

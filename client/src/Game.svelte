@@ -12,15 +12,23 @@
     const dispatch = createEventDispatcher();
 
     let gameref = db.doc('rooms/'+id);
-    let gameBoard, black = false, white = false;
+    let gameBoard, black = false, white = false, blackName, whiteName;
+    let matchStart=false, turn;
+
+    new ClipboardJS('.copy');
 
     docData(gameref).subscribe(match => {
         gameBoard = match.gameBoard
         board.position(gameBoard)
         game.load(gameBoard)
-        black = match.black == uid
-        white = match.white == uid
-        console.log(black, white);
+        if(match.black){
+            blackName = match.black.name
+            black = match.black.uid == uid
+            matchStart = true
+        }
+        turn = game.turn()
+        whiteName = match.white.name
+        white = match.white.uid == uid
         if (black)
             board.orientation('black')
         else
@@ -55,7 +63,8 @@
     if ((game.turn() === 'w' && piece.search(/^b/) !== -1) ||
         (game.turn() === 'b' && piece.search(/^w/) !== -1) ||
         (game.turn() === 'w' && black) ||
-        (game.turn() === 'b' && white)) {
+        (game.turn() === 'b' && white)||
+        !matchStart) {
         return false
     }
     }
@@ -125,5 +134,27 @@
 <style>
 </style>
 
-
-<div id={"myBoard" + id} style="width: 400px"></div>
+<div class="row">
+    <div class="col-md-6 offset-md-2">
+        <div id={"myBoard" + id} style="width: 80%"></div>
+    </div>
+    <div class="col-md-3">
+        <div class="card mb-3">
+            <div class="card-header">Game Status</div>
+            <div class="card-body">
+                {#if !matchStart}
+                    <p class="card-text">Waiting for Second player to join.</p>
+                    <button type="button" class="btn btn-outline-dark copy" data-clipboard-text={id}>
+                        <i class="fas fa-clipboard me-2"></i>Copy Room ID
+                    </button>
+                {:else}
+                    {#if turn === 'w'}
+                        <p class="card-text">{whiteName}'s turn (White)</p>
+                    {:else if turn === 'b'}
+                        <p class="card-text">{blackName}'s turn (Black)</p>
+                    {/if}
+                {/if}
+            </div>
+        </div>
+    </div>
+</div>

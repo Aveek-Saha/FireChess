@@ -68,7 +68,7 @@
     {#if user}
     <!-- <Profile {...user} /> -->
     <div class="container-fluid">
-        <Room uid={user.uid} />
+        <Room uid={user.uid} username={user.displayName} />
     </div>
 
     {:else}
