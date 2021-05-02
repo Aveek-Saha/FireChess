@@ -8,7 +8,7 @@
     export let uid;
     export let username;
 
-    const query = db.collection('rooms').where('players', 'array-contains', uid)
+    const query = db.collection('rooms').where('players', 'array-contains', uid).orderBy("players", "desc");
 	let rooms = collectionData(query, 'id').pipe(startWith([]));;
 
     let roomID = "";
@@ -77,7 +77,13 @@
                 {#each $rooms as room}
                     <button type="button" class="list-group-item list-group-item-action" 
                         on:click={() => selectRoom(room.id)}>
-                        {room.id}
+                        {#if room.black && room.black.uid !=uid}
+                            Room with {room.black.name}
+                        {:else if room.black && room.white.uid !=uid}
+                            Room with {room.white.name}
+                        {:else if !room.black}
+                            Empty room
+                        {/if}
                         {#if room.white.uid == uid}
                             <button type="button" class="btn btn-danger btn-sm float-end" 
                             on:click|stopPropagation={() => {deleteRoom(room.id)}}>
