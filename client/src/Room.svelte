@@ -23,6 +23,10 @@
     }
     
 	function createRoom() {
+        if($rooms.length >= 5){
+            alert("You've already created 5 rooms. Delete some to make room for more")
+            return
+        }
         db.collection('rooms').add({
             players: [uid], 
             white: {"uid": uid, "name": username}, 
