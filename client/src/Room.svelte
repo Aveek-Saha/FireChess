@@ -53,6 +53,9 @@
         });
     }
 
+    function deleteRoom(id) {
+        db.collection("rooms").doc(id).delete()
+    }
     
 </script>
 
@@ -68,10 +71,16 @@
             </div>
             <div class="list-group list-group-flush">
                 {#each $rooms as room}
-                            <button type="button" class="list-group-item list-group-item-action" 
-                            on:click={() => selectRoom(room.id)}>
-                            {room.id}
-                        </button>
+                    <button type="button" class="list-group-item list-group-item-action" 
+                        on:click={() => selectRoom(room.id)}>
+                        {room.id}
+                        {#if room.white.uid == uid}
+                            <button type="button" class="btn btn-danger btn-sm float-end" 
+                            on:click|stopPropagation={() => {deleteRoom(room.id)}}>
+                                <i class="fas fa-trash-alt"></i>
+                            </button>
+                        {/if}
+                    </button>
                 {/each}
             </div>
         </div>
@@ -116,9 +125,7 @@
         <div class="list-group">
             {#each $rooms as room}
                 {#if roomID==room.id}
-                    <!-- <div class="col-md-6 offset-md-3"> -->
                         <Game id={room.id} uid={uid}/>
-                    <!-- </div> -->
                 {/if}
             {/each}
         </div>
