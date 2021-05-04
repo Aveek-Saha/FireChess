@@ -1,5 +1,4 @@
 <script>
-    import Profile from './Profile.svelte';
     import Room from './Room.svelte';
 
     import { auth, googleProvider, facebookProvider, twitterProvider, githubProvider } from './firebase';
