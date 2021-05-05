@@ -42,12 +42,14 @@
         text=""
         docRef.get().then((doc) => {
             if (doc.exists) {
-                console.log("Document data:", doc.data());
-                if(uid !== doc.data().white.uid)
+                console.log("Document data:", doc.data().players.length);
+                if((uid !== doc.data().white.uid) && (doc.data().players.length <= 1))
                     docRef.update({ 
                         black: {"uid": uid, "name": username},
                         players: arrayUnion(uid)
                     });
+                else
+                    alert("Cannot join this room")
             } else {
                 // doc.data() will be undefined in this case
                 console.log("No such document!");
