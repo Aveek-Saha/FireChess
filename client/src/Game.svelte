@@ -144,7 +144,7 @@
 </style>
 
 <div class="row">
-    <div class="col-md-6 offset-md-2">
+    <div class="col-md-6 offset-md-2  mb-3">
         <div id={"myBoard" + id} style="width: 80%"></div>
     </div>
     <div class="col-md-3">

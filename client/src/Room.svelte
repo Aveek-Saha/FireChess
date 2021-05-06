@@ -106,11 +106,13 @@
                         {/if}
                         {#if room.white.uid == uid}
                             <button type="button" class="btn btn-danger btn-sm float-end" 
+                            data-bs-placement="right" title="Delete Room"
                             on:click|stopPropagation={() => {deleteRoom(room.id)}}>
                                 <i class="fas fa-trash-alt"></i>
                             </button>
                         {:else if room.black && (room.black.uid == uid)}
                             <button type="button" class="btn btn-warning btn-sm float-end" 
+                            data-bs-placement="right" title="Leave Room"
                             on:click|stopPropagation={() => {leaveRoom(room.id)}}>
                                 <i class="fas fa-sign-out-alt"></i>
                             </button>
