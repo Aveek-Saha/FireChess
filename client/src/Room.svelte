@@ -1,5 +1,5 @@
 <script>
-    import { db, arrayUnion } from './firebase';
+    import { db, arrayUnion, deleteField, arrayRemove } from './firebase';
     import { collectionData } from 'rxfire/firestore';
     import { startWith } from 'rxjs/operators';
     import Game from './Game.svelte';
@@ -63,6 +63,24 @@
         db.collection("rooms").doc(id).delete()
     }
     
+    function leaveRoom(id) {
+        var docRef = db.collection("rooms").doc(id);
+        docRef.get().then((doc) => {
+            if (doc.exists) {
+                console.log("Document data:", doc.data());
+                if((uid !== doc.data().white.uid) && (doc.data().players.length == 2))
+                    docRef.update({ 
+                        black: deleteField(),
+                        players: arrayRemove(uid)
+                    });
+            } else {
+                // doc.data() will be undefined in this case
+                console.log("No such document!");
+            }
+        }).catch((error) => {
+            console.log("Error getting document:", error);
+        });
+    }
 </script>
 
 <style>
@@ -90,6 +108,11 @@
                             <button type="button" class="btn btn-danger btn-sm float-end" 
                             on:click|stopPropagation={() => {deleteRoom(room.id)}}>
                                 <i class="fas fa-trash-alt"></i>
+                            </button>
+                        {:else if room.black && (room.black.uid == uid)}
+                            <button type="button" class="btn btn-warning btn-sm float-end" 
+                            on:click|stopPropagation={() => {leaveRoom(room.id)}}>
+                                <i class="fas fa-sign-out-alt"></i>
                             </button>
                         {/if}
                     </button>

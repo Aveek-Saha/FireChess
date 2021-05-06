@@ -22,3 +22,5 @@ export const githubProvider = new firebase.auth.GithubAuthProvider();
 
 export const db = firebase.firestore();
 export const arrayUnion = firebase.firestore.FieldValue.arrayUnion
+export const deleteField = firebase.firestore.FieldValue.delete
+export const arrayRemove = firebase.firestore.FieldValue.arrayRemove
